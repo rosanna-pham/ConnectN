@@ -5,10 +5,10 @@ import com.thehutgroup.accelerator.connectn.player.Counter;
 import com.thehutgroup.accelerator.connectn.player.Player;
 
 
-public class ConnectN extends Player {
-  public ConnectN(Counter counter) {
+public class RosConnectN extends Player {
+  public RosConnectN(Counter counter) {
     //TODO: fill in your name here
-    super(counter, ConnectN.class.getName());
+    super(counter, RosConnectN.class.getName());
   }
 
   @Override
