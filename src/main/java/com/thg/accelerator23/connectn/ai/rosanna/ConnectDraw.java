@@ -12,11 +12,11 @@ import java.util.Random;
 //
 //    return col;
 
-public class ConnectN extends Player {
+public class ConnectDraw extends Player {
 
-  public ConnectN(Counter counter) {
+  public ConnectDraw(Counter counter) {
     // ROSANNA
-    super(counter, ConnectN.class.getName());
+    super(counter, ConnectDraw.class.getName());
   }
 
   @Override
