@@ -13,6 +13,7 @@ import java.util.Random;
 //    return col;
 
 public class ConnectN extends Player {
+
   public ConnectN(Counter counter) {
     // ROSANNA
     super(counter, ConnectN.class.getName());
