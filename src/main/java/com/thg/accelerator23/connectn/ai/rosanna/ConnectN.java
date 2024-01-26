@@ -4,7 +4,9 @@ import com.thehutgroup.accelerator.connectn.player.Board;
 import com.thehutgroup.accelerator.connectn.player.Counter;
 import com.thehutgroup.accelerator.connectn.player.Player;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 // Example: Simple AI makes a random move
 //    Random random = new Random();
@@ -48,13 +50,17 @@ public class ConnectN extends Player {
       for (int x = 0; x < width - 3; x++) {
         int nullCount = 0;
         int nullPosition = -1;
+        Set<Counter> uniqueCounters = new HashSet<>();
+
         for (int i = x; i <= x + 3; i ++ ){
           if (counterPlacements[i][y] == null) {
             nullCount++;
             nullPosition = i;
+            uniqueCounters.add(counterPlacements[i][y]);
           }
+
         }
-        if (nullCount == 1){
+        if (nullCount == 1 && uniqueCounters.size() ==1){
           block = nullPosition;
           break;
         }
@@ -68,13 +74,16 @@ public class ConnectN extends Player {
       for (int y = 0; y < height - 3; y++) {
         int nullCount = 0;
         int nullPosition = -1;
+        Set<Counter> uniqueCounters = new HashSet<>();
+
         for (int i = y; i<= y+3; i++) {
           if (counterPlacements[x][i] == null) {
             nullCount++;
             nullPosition = i;
+            uniqueCounters.add(counterPlacements[i][y]);
           }
         }
-        if (nullCount ==  1) {
+        if (nullCount ==  1 && uniqueCounters.size() ==1) {
           block = nullPosition;
           break;
         }
@@ -84,16 +93,27 @@ public class ConnectN extends Player {
   }
 
   private int diagonalWin1(Counter[][] counterPlacements, int width, int height) {
-    //downwards diagonal
+    //downward diagonal
     int block = -1;
     for (int x = 0; x < width - 3; x++) {
       for (int y = 0; y < height - 3; y++) {
+        int nullCount = 0;
+        int nullPosition = -1;
+        Set<Counter> uniqueCounters = new HashSet<>();
 
-        if (counterPlacements[x][y] != null &&
-                counterPlacements[x][y].equals(counterPlacements[x + 1][y + 1]) &&
-                counterPlacements[x][y].equals(counterPlacements[x + 2][y + 2]) &&
-                counterPlacements[x + 3][y + 3] == null) {
-          block = x + 3;
+        for ( int i = x; i <= x + 3; i++) {
+          for(int z = y; z <= y + 3; z++) {
+            if (counterPlacements[i][z] == null) {
+              nullCount++;
+              nullPosition = i;
+              uniqueCounters.add(counterPlacements[i][z]);
+            }
+          }
+        }
+
+        if (nullCount == 1 && uniqueCounters.size() ==1) {
+          block = nullPosition;
+          break;
         }
       }
     }
@@ -104,12 +124,22 @@ public class ConnectN extends Player {
     int block = -1;
     for (int x = 3; x < width; x++) {
       for (int y = 0; y < height - 3; y++) {
-        if (counterPlacements[x][y] != null &&
-                counterPlacements[x][y].equals(counterPlacements[x - 1][y + 1]) &&
-                counterPlacements[x][y].equals(counterPlacements[x - 2][y + 2]) &&
-                counterPlacements[x - 3][y + 3] == null) {
-          block = x - 3;
+        int nullCount = 0;
+        int nullPosition = -1;
+        Set<Counter> uniqueCounters = new HashSet<>();
 
+        for ( int i = x; i >= x -3; i--) {
+          for (int z = y; z <= y-3; z--){
+            if (counterPlacements[i][z] == null) {
+              nullCount++;
+              nullPosition = i;
+              uniqueCounters.add(counterPlacements[i][z]);
+            }
+          }
+        }
+        if (nullCount == 1 && uniqueCounters.size() ==1) {
+          block = nullPosition;
+          break;
         }
       }
 
