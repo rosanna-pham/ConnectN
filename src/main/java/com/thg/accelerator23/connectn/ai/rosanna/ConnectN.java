@@ -46,11 +46,17 @@ public class ConnectN extends Player {
     int block = -1;
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width - 3; x++) {
-        if (counterPlacements[x][y] != null &&
-                counterPlacements[x][y].equals(counterPlacements[x + 1][y]) &&
-                counterPlacements[x][y].equals(counterPlacements[x + 2][y]) &&
-                counterPlacements[x + 3][y] == null) {
-          block = x + 3;
+        int nullCount = 0;
+        int nullPosition = -1;
+        for (int i = x; i <= x + 3; i ++ ){
+          if (counterPlacements[i][y] == null) {
+            nullCount++;
+            nullPosition = i;
+          }
+        }
+        if (nullCount == 1){
+          block = nullPosition;
+          break;
         }
       }
     }
@@ -60,11 +66,17 @@ public class ConnectN extends Player {
     int block = -1;
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height - 3; y++) {
-        if (counterPlacements[x][y] != null &&
-                counterPlacements[x][y].equals(counterPlacements[x][y + 1]) &&
-                counterPlacements[x][y].equals(counterPlacements[x][y + 2]) &&
-                counterPlacements[x][y + 3] == null) {
-          block = x;
+        int nullCount = 0;
+        int nullPosition = -1;
+        for (int i = y; i<= y+3; i++) {
+          if (counterPlacements[x][i] == null) {
+            nullCount++;
+            nullPosition = i;
+          }
+        }
+        if (nullCount ==  1) {
+          block = nullPosition;
+          break;
         }
       }
     }
@@ -76,6 +88,7 @@ public class ConnectN extends Player {
     int block = -1;
     for (int x = 0; x < width - 3; x++) {
       for (int y = 0; y < height - 3; y++) {
+
         if (counterPlacements[x][y] != null &&
                 counterPlacements[x][y].equals(counterPlacements[x + 1][y + 1]) &&
                 counterPlacements[x][y].equals(counterPlacements[x + 2][y + 2]) &&
