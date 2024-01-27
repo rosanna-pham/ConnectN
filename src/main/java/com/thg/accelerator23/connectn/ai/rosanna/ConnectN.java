@@ -26,8 +26,11 @@ public class ConnectN extends Player {
     int width = board.getConfig().getWidth();
     int height = board.getConfig().getHeight();
 
+
     int move = horizontalWin(counterPlacements, width, height);
-    if ( move != -1) return move;
+    if ( move != -1)
+      return move;
+
 
     move = verticalWin(counterPlacements, width, height);
     if ( move != -1) return move;
@@ -52,17 +55,28 @@ public class ConnectN extends Player {
         int nullPosition = -1;
         Set<Counter> uniqueCounters = new HashSet<>();
 
-        for (int i = x; i <= x + 3; i ++ ){
+        for (int i = x; i <= x + 3; i++) {
           if (counterPlacements[i][y] == null) {
+            if (y == 0) {
+              nullCount++;
+              nullPosition = i;
+              break;
+            }
+          }
+          if (y != 0 && counterPlacements[i][y] == null && counterPlacements[i][y - 1] == null) {
+              break;
+          }
+          if (y != 0 && counterPlacements[i][y] == null && counterPlacements[i][y - 1] != null) {
             nullCount++;
             nullPosition = i;
+          } else {
             uniqueCounters.add(counterPlacements[i][y]);
           }
 
-        }
-        if (nullCount == 1 && uniqueCounters.size() ==1){
-          block = nullPosition;
-          break;
+          if (nullCount == 1 && uniqueCounters.size() == 1) {
+            block = nullPosition;
+            break;
+          }
         }
       }
     }
@@ -72,28 +86,20 @@ public class ConnectN extends Player {
     int block = -1;
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height - 3; y++) {
-        int nullCount = 0;
-        int nullPosition = -1;
-        Set<Counter> uniqueCounters = new HashSet<>();
-
-        for (int i = y; i<= y+3; i++) {
-          if (counterPlacements[x][i] == null) {
-            nullCount++;
-            nullPosition = i;
-            uniqueCounters.add(counterPlacements[i][y]);
-          }
-        }
-        if (nullCount ==  1 && uniqueCounters.size() ==1) {
-          block = nullPosition;
-          break;
+        if (counterPlacements[x][y] != null &&
+                counterPlacements[x][y].equals(counterPlacements[x][y + 1]) &&
+                counterPlacements[x][y].equals(counterPlacements[x][y + 2]) &&
+                counterPlacements[x][y + 3] == null) {
+          block = x;
         }
       }
     }
     return block;
   }
 
+
   private int diagonalWin1(Counter[][] counterPlacements, int width, int height) {
-    //downward diagonal
+    //upwards
     int block = -1;
     for (int x = 0; x < width - 3; x++) {
       for (int y = 0; y < height - 3; y++) {
@@ -101,14 +107,14 @@ public class ConnectN extends Player {
         int nullPosition = -1;
         Set<Counter> uniqueCounters = new HashSet<>();
 
-        for ( int i = x; i <= x + 3; i++) {
-          for(int z = y; z <= y + 3; z++) {
-            if (counterPlacements[i][z] == null) {
-              nullCount++;
-              nullPosition = i;
-              uniqueCounters.add(counterPlacements[i][z]);
-            }
+        for ( int i = x, z = y; i <= x + 3; i++, z++) {
+          if (counterPlacements[i][z] == null) {
+            nullCount++;
+            nullPosition = i;
+          } else {
+            uniqueCounters.add(counterPlacements[i][z]);
           }
+
         }
 
         if (nullCount == 1 && uniqueCounters.size() ==1) {
@@ -120,21 +126,23 @@ public class ConnectN extends Player {
     return block;
   }
   private int diagonalWin2(Counter[][] counterPlacements, int width, int height) {
-    //upwards diagonal
+    //downwards diagonal
     int block = -1;
-    for (int x = 3; x < width; x++) {
-      for (int y = 0; y < height - 3; y++) {
+    for (int x = 0; x < width -3; x++) {
+      for (int y = height; y > 3; y--) {
         int nullCount = 0;
         int nullPosition = -1;
         Set<Counter> uniqueCounters = new HashSet<>();
 
-        for ( int i = x; i >= x -3; i--) {
-          for (int z = y; z <= y-3; z--){
-            if (counterPlacements[i][z] == null) {
-              nullCount++;
-              nullPosition = i;
-              uniqueCounters.add(counterPlacements[i][z]);
-            }
+        for ( int i = x, z = y; i <= x + 3; i++, z--) {
+          if (z < 0 || z>= height){
+            break;
+          }
+          if (counterPlacements[i][z] == null) {
+            nullCount++;
+            nullPosition = i;
+          } else {
+            uniqueCounters.add(counterPlacements[i][z]);
           }
         }
         if (nullCount == 1 && uniqueCounters.size() ==1) {
