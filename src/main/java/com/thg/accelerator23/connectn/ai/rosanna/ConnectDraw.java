@@ -57,21 +57,12 @@ public class ConnectDraw extends Player {
 
         for (int i = x; i <= x + 3; i++) {
           if (counterPlacements[i][y] == null) {
-            if (y == 0) {
-              nullCount++;
-              nullPosition = i;
-              break;
-            }
-          }
-          if (y != 0 && counterPlacements[i][y] == null && counterPlacements[i][y - 1] == null) {
-              break;
-          }
-          if (y != 0 && counterPlacements[i][y] == null && counterPlacements[i][y - 1] != null) {
             nullCount++;
             nullPosition = i;
           } else {
             uniqueCounters.add(counterPlacements[i][y]);
           }
+        }
 
           if (nullCount == 1 && uniqueCounters.size() == 1) {
             block = nullPosition;
@@ -79,9 +70,10 @@ public class ConnectDraw extends Player {
           }
         }
       }
-    }
     return block;
-  }
+    }
+
+
   private int verticalWin(Counter[][] counterPlacements, int width, int height) {
     int block = -1;
     for (int x = 0; x < width; x++) {
